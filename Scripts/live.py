@@ -4,7 +4,7 @@ import subprocess
 import time
 import os
 
-# Store seen TTYs
+
 seen_ttys = set()
 
 def get_logged_in_users():
@@ -17,11 +17,11 @@ def get_logged_in_users():
                 tty = parts[1]
                 ip = parts[4]
 
-                # If TTY is already seen, skip
+      
                 if tty in seen_ttys:
                     continue
 
-                # New TTY detected
+          
                 seen_ttys.add(tty)
                 print("=== New SSH Session Detected ===")
                 print("User: {}\nTTY:  {}\nFrom: {}\n".format(username, tty, ip))
@@ -42,4 +42,4 @@ def get_logged_in_users():
 if __name__ == "__main__":
     while True:
         get_logged_in_users()
-        time.sleep(5)  # Wait 5 seconds before checking again
+        time.sleep(5)  
